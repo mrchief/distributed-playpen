@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("MQServer")]
+[assembly: AssemblyTitle("MQWorker")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Hrusikesh Panda")]
-[assembly: AssemblyProduct("MQServer")]
+[assembly: AssemblyProduct("MQWorker")]
 [assembly: AssemblyCopyright("Copyright © Hrusikesh Panda 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("5ae11bea-afbf-434e-906e-ddb5553bf1b0")]
+[assembly: Guid("ef5500ce-9eae-40d3-8899-cb8f4f1c00ac")]
 
 // Version information for an assembly consists of the following four values:
 //
