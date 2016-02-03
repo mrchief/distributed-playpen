@@ -1,4 +1,4 @@
-﻿namespace Topshelf.SimpleInjector.QuickStart.Content
+﻿namespace MQServer
 {
     public class Dependency : IDependency
     {

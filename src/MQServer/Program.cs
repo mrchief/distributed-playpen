@@ -1,6 +1,8 @@
 ﻿using SimpleInjector;
+using Topshelf;
+using Topshelf.SimpleInjector;
 
-namespace Topshelf.SimpleInjector.QuickStart.Content
+namespace MQServer
 {
     internal class Program
     {
@@ -29,9 +31,9 @@ namespace Topshelf.SimpleInjector.QuickStart.Content
                     //s.WhenPaused((service, control) => service.Pause());
                 });
 
-                config.SetServiceName("My.Cool.Service");
-                config.SetDisplayName("My Cool Service");
-                config.SetDescription("What is my purpose?");
+                config.SetServiceName("MQServer");
+                config.SetDisplayName("Message Queuing Server");
+                config.SetDescription("NetMQ server host");
             });
         }
 
