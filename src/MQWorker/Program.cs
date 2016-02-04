@@ -1,6 +1,7 @@
-﻿using SimpleInjector;
-using Topshelf;
-using Topshelf.SimpleInjector;
+﻿using System;
+using System.Threading;
+using NetMQ;
+using NetMQ.Sockets;
 
 namespace MQWorker
 {
@@ -8,46 +9,30 @@ namespace MQWorker
     {
         private static void Main()
         {
-            // Create a new Simple Injector container
-            Container container = new Container();
-
-            // Configure the Container
-            ConfigureContainer(container);
-
-            // Optionally verify the container's configuration to check for configuration errors.
-            container.Verify();
-
-            HostFactory.Run(config =>
+            using (NetMQContext context = NetMQContext.Create())
             {
-                // Pass it to Topshelf
-                config.UseSimpleInjector(container);
-
-                config.Service<Service>(s =>
+                using (var responseSocket = context.CreateResponseSocket())
                 {
-                    // Let Topshelf use it
-                    s.ConstructUsingSimpleInjector();
-                    s.WhenStarted((service, control) => service.Start());
-                    s.WhenStopped((service, control) => service.Stop());
-                    //s.WhenPaused((service, control) => service.Pause());
-                });
+                    responseSocket.Bind("tcp://*:10001");
 
-                config.SetServiceName("MQWorker");
-                config.SetDisplayName("Message Queuing Worker");
-                config.SetDescription("NetMQ worker service");
-            });
-        }
+                    while (true)
+                    {
+                        var requestMessage = responseSocket.ReceiveMultipartMessage();
+                        string a = requestMessage.Pop().ConvertToString();
+                        string b = requestMessage.Pop().ConvertToString();
 
-        /// <summary>
-        /// Register services here
-        /// </summary>
-        /// <param name="container"></param>
-        private static void ConfigureContainer(Container container)
-        {
-            //Register the service
-            container.Register<Service>();
+                        int aNumber = Convert.ToInt32(a);
+                        int bNumber = Convert.ToInt32(b);
 
-            //Register dependencies
-            container.Register<IDependency, Dependency>();
+                        string result = (aNumber + bNumber).ToString();
+
+                        NetMQMessage responseMessage = new NetMQMessage();
+                        responseMessage.Append(result);
+
+                        responseSocket.SendMultipartMessage(responseMessage);
+                    }
+                }
+            }
         }
     }
 }

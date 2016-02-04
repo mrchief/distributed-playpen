@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MQServer", "MQServer\MQServer.csproj", "{5AE11BEA-AFBF-434E-906E-DDB5553BF1B0}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MQSite", "MQSite\MQSite.csproj", "{5A19598E-FD67-4F04-93F1-521CABDDB25E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MQWorker", "MQWorker\MQWorker.csproj", "{6E921235-70BD-437B-9A0F-D5949F7026B1}"
@@ -15,10 +13,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5AE11BEA-AFBF-434E-906E-DDB5553BF1B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5AE11BEA-AFBF-434E-906E-DDB5553BF1B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5AE11BEA-AFBF-434E-906E-DDB5553BF1B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5AE11BEA-AFBF-434E-906E-DDB5553BF1B0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5A19598E-FD67-4F04-93F1-521CABDDB25E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5A19598E-FD67-4F04-93F1-521CABDDB25E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5A19598E-FD67-4F04-93F1-521CABDDB25E}.Release|Any CPU.ActiveCfg = Release|Any CPU

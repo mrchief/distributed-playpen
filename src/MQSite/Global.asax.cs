@@ -16,6 +16,9 @@ namespace MQSite
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            string address = "tcp://127.0.0.1:10001";
+
         }
     }
 }
