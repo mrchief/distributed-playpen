@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using NetMQ;
+using NetMQ.Sockets;
 
 namespace MQSite.Controllers
 {
@@ -45,7 +47,7 @@ namespace MQSite.Controllers
             }
         }
 
-        public ActionResult About()
+        public ActionResult About() 
         {
             ViewBag.Message = "Your application description page.";
 
@@ -57,6 +59,18 @@ namespace MQSite.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+        public ActionResult Publish(string message)
+        {
+            using (var pubSocket = new PublisherSocket())
+            {
+                pubSocket.Options.SendHighWatermark = 1000;
+                pubSocket.Bind(m_serviceAddress);
+                pubSocket.SendMoreFrame("TopicA").SendFrame(message);
+            }
+
+            return View("Index");
         }
     }
 }
