@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Messaging;
+using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -33,22 +34,39 @@ namespace MQWorker
             //    Console.ReadLine();
             //}
 
-            while (true)
+            //while (true)
+            //{
+            try
             {
-                try
+                var queue = new MessageQueue(@".\Private$\HelloWorld")
                 {
-                    var queue = new MessageQueue(@".\Private$\HelloWorld");
-                    var message = queue.Receive(new TimeSpan(0, 0, 1));
-                    message.Formatter = new XmlMessageFormatter(
-                                        new String[] { "System.String, mscorlib" });
-                    Console.WriteLine(message.Body.ToString());
-                }
-                catch (Exception ex)
+                    Formatter = new XmlMessageFormatter(new[] { "".GetType() })
+                };
+
+                queue.ReceiveCompleted += (sender, e) =>
                 {
-                    Console.WriteLine("No Message");
-                }
-                Thread.Sleep(100);
+                    var msg = queue.EndReceive(e.AsyncResult);
+                    Console.WriteLine(msg.Body.ToString());
+                    queue.BeginReceive();
+
+                };
+
+                queue.BeginReceive();
+
+                //var message = queue.Receive(new TimeSpan(0, 0, 1));
+                //message.Formatter = new XmlMessageFormatter(
+                //                    new String[] { "System.String, mscorlib" });
+                //Console.WriteLine(message.Body.ToString());
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine("No Message");
+            }
+            //Thread.Sleep(100);
+            //}
+
+            Console.WriteLine("Listening... Press any key to quit");
+            Console.ReadLine();
 
 
         }
