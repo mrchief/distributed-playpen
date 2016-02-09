@@ -1,4 +1,3 @@
-using NetMQ;
 
 [assembly: WebActivator.PostApplicationStartMethod(typeof(MQSite.App_Start.SimpleInjectorInitializer), "Initialize")]
 
@@ -32,7 +31,6 @@ namespace MQSite.App_Start
         private static void InitializeContainer(Container container)
         {
 
-            container.RegisterSingleton(NetMQContext.Create());
             // For instance:
             // container.Register<IUserRepository, SqlUserRepository>(Lifestyle.Scoped);
         }

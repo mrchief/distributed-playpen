@@ -1,74 +1,55 @@
 ﻿using System;
+using System.Messaging;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using NetMQ;
-using NetMQ.Sockets;
+using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
 
 namespace MQWorker
 {
     internal class Program
     {
-        /*private static void Main()
-        {
-            using (NetMQContext context = NetMQContext.Create())
-            {
-                using (var responseSocket = context.CreateResponseSocket())
-                {
-                    responseSocket.Bind("tcp://*:10001");
 
-                    while (true)
-                    {
-                        var requestMessage = responseSocket.ReceiveMultipartMessage();
-                        string a = requestMessage.Pop().ConvertToString();
-                        string b = requestMessage.Pop().ConvertToString();
-
-                        int aNumber = Convert.ToInt32(a);
-                        int bNumber = Convert.ToInt32(b);
-
-                        string result = (aNumber + bNumber).ToString();
-
-                        NetMQMessage responseMessage = new NetMQMessage();
-                        responseMessage.Append(result);
-
-                        responseSocket.SendMultipartMessage(responseMessage);
-                    }
-                }
-            }
-        }*/
 
         private static void Main()
         {
-            /*Task.Factory.StartNew(() =>
+            //var factory = new ConnectionFactory() { HostName = "localhost" };
+            //using (var connection = factory.CreateConnection())
+            //using (var channel = connection.CreateModel())
+            //{
+            //    channel.QueueDeclare(queue: "hello", durable: false, exclusive: false, autoDelete: false, arguments: null);
+
+            //    var consumer = new EventingBasicConsumer(channel);
+            //    consumer.Received += (model, ea) =>
+            //    {
+            //        var body = ea.Body;
+            //        var message = Encoding.UTF8.GetString(body);
+            //        Console.WriteLine(" [x] Received {0}", message);
+            //    };
+            //    channel.BasicConsume(queue: "hello", noAck: true, consumer: consumer);
+
+            //    Console.WriteLine(" Press [enter] to exit.");
+            //    Console.ReadLine();
+            //}
+
+            while (true)
             {
-                using (var xpubSocket = new XPublisherSocket("@tcp://127.0.0.1:1234"))
-                using (var xsubSocket = new XSubscriberSocket("@tcp://127.0.0.1:5678"))
+                try
                 {
-                    Console.WriteLine("Intermediary started, and waiting for messages");
-
-                    // proxy messages between frontend / backend
-                    var proxy = new Proxy(xsubSocket, xpubSocket);
-
-                    // blocks indefinitely
-                    proxy.Start();
+                    var queue = new MessageQueue(@".\Private$\HelloWorld");
+                    var message = queue.Receive(new TimeSpan(0, 0, 1));
+                    message.Formatter = new XmlMessageFormatter(
+                                        new String[] { "System.String, mscorlib" });
+                    Console.WriteLine(message.Body.ToString());
                 }
-            });*/
-            Console.WriteLine("Subscriber started for TopicA");
-
-            using (var subSocket = new SubscriberSocket())
-            {
-                subSocket.Options.ReceiveHighWatermark = 1000;
-                subSocket.Connect("tcp://*:10001");
-                subSocket.Subscribe("TopicA");
-                Console.WriteLine("Subscriber socket connecting...");
-                while (true)
+                catch (Exception ex)
                 {
-                    Console.WriteLine("waiting");
-                    var messageTopicReceived = subSocket.ReceiveFrameString();
-                    Console.WriteLine("messageTopicReceived");
-                    var messageReceived = subSocket.ReceiveFrameString();
-                    Console.WriteLine($"received: {messageReceived}");
+                    Console.WriteLine("No Message");
                 }
+                Thread.Sleep(100);
             }
+
 
         }
     }
